@@ -24,16 +24,30 @@ while True:
     choice = input("Enter your choice (1/2/3): ")
 
     if choice == "1":
+        # Add a task | get a user input store in new_task
         new_task = input("Please add a new task: ")
+        # tasks is are list we are appending the tasks with (new_task) that we just got from the user input
         tasks.append(new_task)
+        # print configraiton of what we just added
         print("New task added:", new_task)
+    
+    # Listing out the tasks[] with an enumerate function
+    # first catches the task list not found and print "No tasks found"
     elif choice == "2":
-        print("\n--- This feature is coming soon")
+        print("\n--- Task List ---")
+        if not tasks:
+            print("No tasks found.")
+        else:
+            for index, task in enumerate(tasks, start=1):
+                print(f"{index}. {task}")
+    
+    # options 3, I split into multiple ways to exit based on common customer behaviors
     elif choice == "3" or choice.lower() == "exit" or choice.lower() == "quit" or choice.lower() == "q":
         print("Exiting the program. Goodbye!")
         break
+    
+    # catch to show invalid input if the yester fails to select an of the correct options
     else:
         print("Invalid choice. Please select a valid option.")
-
 
 # ------------- End of program ---------------- 
