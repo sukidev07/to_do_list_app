@@ -19,9 +19,10 @@ while True:
     print("\nSelect an option:")
     print("1. Add a task")
     print("2. View all tasks")
-    print("3. Exit")
+    print("3. Delete task")
+    print("4. Exit")
 
-    choice = input("Enter your choice (1/2/3): ")
+    choice = input("Enter your choice (1/2/3/4): ")
 
     if choice == "1":
         # Add a task | get a user input store in new_task
@@ -41,8 +42,36 @@ while True:
             for index, task in enumerate(tasks, start=1):
                 print(f"{index}. {task}")
     
-    # options 3, I split into multiple ways to exit based on common customer behaviors
-    elif choice == "3" or choice.lower() == "exit" or choice.lower() == "quit" or choice.lower() == "q":
+    # delete operation to list the current tasks in an ordered number list
+    # validate an empty list before continueing
+    # request the user to input and validate the request can done
+    elif choice == "3":
+        print("\n--- Delete a task ---")
+        if not tasks:
+            print("No tasks found.")
+        else:
+            for index, task in enumerate(tasks, start=1):
+                print(f"{index}. {task}")
+            try:
+                # Ask user which task they would like to delete
+                task_to_delete = int(input("Enter the number of the task to delete: "))
+
+                # error_handling check to validate
+                # use of the len() function to review the list and range the range starting at index 0
+                if 1 <= task_to_delete <= len(tasks):
+                    # validate -1 task since you know, we start at 0, but people think 1-100 not 0-99 
+                    # use of the pop() function to get the index number -1 and perform 2 action 
+                    # 1. to get the object string value to print {deleted_task} 
+                    # 2. actually remove pop() specified index from the list in tasks
+                    deleted_task = tasks.pop(task_to_delete - 1)
+                    print(f"Task '{deleted_task}' has been deleted.")
+                else:
+                    print("Invalid task number. No task deleted.")
+            except ValueError:
+                print("Invalid input. Please enter a valid task number.")
+    
+    # options 4, I split into multiple ways to exit based on common customer behaviors
+    elif choice == "4" or choice.lower() == "exit" or choice.lower() == "quit" or choice.lower() == "q":
         print("Exiting the program. Goodbye!")
         break
     
