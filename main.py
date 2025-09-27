@@ -29,23 +29,28 @@ while True:
 
 #---------------- Add Task --------------------------
     if choice == "1":
-        choices.add_task(tasks)
+        new_task = choices.add_task(tasks)
+        print("New task added:", new_task)
 
 #---------------- List Tasks ------------------------
     elif choice == "2":
-        choices.list_tasks(tasks)
+        all_the_tasks = choices.list_tasks(tasks)
+        print(all_the_tasks)
 
 #---------------- Update Task ------------------------
     elif choice == "3":
-        choices.update_task(tasks)
+        update_task = choices.update_task(tasks)
+        print(f"Task {update_task} has been updated.")
 
 #---------------- Delete Task ------------------------
     elif choice == "4":
-        choices.delete_task(tasks)
+        delete_task = choices.delete_task(tasks)
+        print(f"Task {delete_task} has been deleted.")
 
 #---------------- End/Quit Program ----------------------------
     elif choice == "5" or choice.lower() == "exit" or choice.lower() == "quit"  or choice.lower() == "q":
-        choices.exit_program()
+        end_program = choices.exit_program()
+        print(end_program)
         break
     else:
         print("Invalid choice. Please select a valid option.")
