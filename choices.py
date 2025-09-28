@@ -34,14 +34,12 @@ def list_tasks(tasks):
 # # task update operation so we can update inline instead of deleting and shifting the list operation
 def update_task(tasks):
         if not tasks:
-            # error_handling for an empty list - move on
-            return "No tasks found."        
-        print("\n--- Update a task ---\n")
-            # reuse of the same logic as add, list and delete
-        for index, task in enumerate(tasks, start=1):
-            print(f"{index}. {task}")
-            #print(f"{index}. {task}")
-            # Ask user which task they would like to update
+            return "No tasks found."
+        # called the list_task(tasks) function because it repeats 
+        # gets and returns the list more DRY
+        return_task_list = list_tasks(tasks)
+        print(return_task_list)
+        
         try:
             # Ask user which task they would like to update
             task_to_update = int(input("Enter the number of the task to update: "))
@@ -54,7 +52,7 @@ def update_task(tasks):
                 # gets the tasks list, validates  against input of task_to_update - 1 to get the correct index number
                 # then adds thew new information from update_task to tasks at the proper index
                 tasks[task_to_update - 1] = update_task
-                return update_task
+                return f"Task '{task_to_update}' has been updated to: '{update_task}'"
                 #print(f"Task {task_to_update} has been updated to: {update_task}")
                 #print("Task updated successfully!")
             else:
@@ -72,10 +70,11 @@ def delete_task(tasks):
         if not tasks:
             return "No tasks found."
         
-        print("\n--- Delete a task ---\n")
-            # reuse of the same logic as add, list and update
-        for index, task in enumerate(tasks, start=1):
-                print(f"{index}. {task}")
+        # called the list_task(tasks) function because it repeats 
+        # gets and returns the list more DRY
+        return_task_list = list_tasks(tasks)
+        print(return_task_list)
+
         try:
             # Ask user which task they would like to delete
             task_to_delete = int(input("Enter the number of the task to delete: "))
@@ -88,14 +87,13 @@ def delete_task(tasks):
                 # 1. to get the object string value to print {deleted_task} 
                 # 2. actually remove pop() specified index from the list in tasks
                 deleted_task = tasks.pop(task_to_delete - 1)
-                return deleted_task
+                return f"Task '{task_to_delete}' has been deleted: {deleted_task}"
                 #print(f"Task {task_to_delete} has been deleted.")
                 #print("Task deleted successfully!")
             else:
                 return "Invalid task number. No task deleted."
         except ValueError:
             return "Invalid input. Please enter a valid task number."
-    
 # ----------------- End/Quit Program ----------------------------
 def exit_program():
         return "Exiting the program. Goodbye!"

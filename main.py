@@ -40,12 +40,12 @@ while True:
 #---------------- Update Task ------------------------
     elif choice == "3":
         update_task = choices.update_task(tasks)
-        print(f"Task {update_task} has been updated.")
+        print(update_task)
 
 #---------------- Delete Task ------------------------
     elif choice == "4":
         delete_task = choices.delete_task(tasks)
-        print(f"Task {delete_task} has been deleted.")
+        print(delete_task)
 
 #---------------- End/Quit Program ----------------------------
     elif choice == "5" or choice.lower() == "exit" or choice.lower() == "quit"  or choice.lower() == "q":
@@ -54,6 +54,5 @@ while True:
         break
     else:
         print("Invalid choice. Please select a valid option.")
-
 
 # ------------- End of program ---------------- 
