@@ -7,11 +7,10 @@ import choices
 
 # ------------- Start of program ----------------
 
-# list tasks []
-# this is the location where we keep our stuff and is base EMPTY
-# this is where our "to-do-list information will be held" 
-# list 
-tasks = []
+# Load existing tasks from file at the start of the program
+tasks, load_message = choices.load_tasks()
+print(load_message)
+
 
 print("--- Welcome to the Task Manager ---")
 
@@ -31,22 +30,26 @@ while True:
     if choice == "1":
         new_task = choices.add_task(tasks)
         print("New task added:", new_task)
+        choices.save_tasks(tasks)
 
 #---------------- List Tasks ------------------------
     elif choice == "2":
         all_the_tasks = choices.list_tasks(tasks)
         print(all_the_tasks)
+        choices.save_tasks(tasks)
 
 #---------------- Update Task ------------------------
     elif choice == "3":
         update_task = choices.update_task(tasks)
         print(update_task)
-
+        if "updated" in update_task:
+            choices.save_tasks(tasks)
 #---------------- Delete Task ------------------------
     elif choice == "4":
         delete_task = choices.delete_task(tasks)
         print(delete_task)
-
+        if "deleted" in delete_task:
+            choices.save_tasks(tasks)
 #---------------- End/Quit Program ----------------------------
     elif choice == "5" or choice.lower() == "exit" or choice.lower() == "quit"  or choice.lower() == "q":
         end_program = choices.exit_program()

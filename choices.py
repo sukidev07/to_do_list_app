@@ -3,6 +3,31 @@
 # refaactor main.py splitting out code into functions.
 # choices add, remove, list, append, quit
 
+# ---------------- Save Tasks ------------------------
+
+def save_tasks(tasks, filename="tasks.txt"):
+    # open a new or existing file tasks.txt created locally in the path.
+    with open(filename, "w") as file:
+        for task in tasks:
+            file.write(task + "\n")
+        return f"Tasks saved to {filename}."
+    # print("Tasks saved to", filename)
+
+# ---------------- Load Tasks ------------------------
+def load_tasks(filename="tasks.txt"):
+    tasks = []
+    try:
+        with open(filename, "r") as file:
+            tasks = [line.strip() for line in file.readlines()]
+        return tasks, f"Tasks loaded from {filename}."
+        # print("Tasks loaded from", filename)
+    except FileNotFoundError:
+        return tasks, f"No existing task file found. Starting with an empty task list."
+        # print("No existing task file found. Starting with an empty task list.")
+    except Exception as e:
+        return tasks, f"An error occurred while loading tasks: {e}"
+        # print("An error occurred while loading tasks:", e)
+
 # ---------------- Add Task --------------------------
 def add_task(tasks):
         # Add a task | get a user input store in new_task
