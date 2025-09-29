@@ -18,8 +18,10 @@ def load_tasks(filename="tasks.txt"):
     tasks = []
     try:
         with open(filename, "r") as file:
+            # readlines() reads all lines in a file and returns them as a list of strings.
+            # using list comprehension to strip newline characters from each line.
             tasks = [line.strip() for line in file.readlines()]
-        return tasks, f"Tasks loaded from {filename}."
+        return tasks, f"Tasks loaded from: {filename}."
         # print("Tasks loaded from", filename)
     except FileNotFoundError:
         return tasks, f"No existing task file found. Starting with an empty task list."
@@ -77,7 +79,7 @@ def update_task(tasks):
                 # gets the tasks list, validates  against input of task_to_update - 1 to get the correct index number
                 # then adds thew new information from update_task to tasks at the proper index
                 tasks[task_to_update - 1] = update_task
-                return f"Task '{task_to_update}' has been updated to: '{update_task}'"
+                return f"Task '{task_to_update}' has been updated: '{update_task}'"
                 #print(f"Task {task_to_update} has been updated to: {update_task}")
                 #print("Task updated successfully!")
             else:

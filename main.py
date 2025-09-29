@@ -10,21 +10,20 @@ import choices
 # Load existing tasks from file at the start of the program
 tasks, load_message = choices.load_tasks()
 print(load_message)
-
-
-print("--- Welcome to the Task Manager ---")
-
-
-# Starting a loop so we can keep the prgram running to add multiple tasks
+print()
+print("Welcome to the To-Do List App!")
+print("==============================")
+# Starting a loop so we can keep the program running to add multiple tasks
 while True:
     print("\nSelect an option:")
+    print("-----------------")
     print("1. Add a new task")
     print("2. View all tasks")
     print("3. Update task")
     print("4. Delete task")
     print("5. Exit")
-
-    choice = input("Enter your choice (1/2/3/4/5): ")
+    print("-----------------")
+    choice = input("Enter your choice (1-5): ")
 
 #---------------- Add Task --------------------------
     if choice == "1":
@@ -36,7 +35,6 @@ while True:
     elif choice == "2":
         all_the_tasks = choices.list_tasks(tasks)
         print(all_the_tasks)
-        choices.save_tasks(tasks)
 
 #---------------- Update Task ------------------------
     elif choice == "3":
@@ -44,12 +42,14 @@ while True:
         print(update_task)
         if "updated" in update_task:
             choices.save_tasks(tasks)
+
 #---------------- Delete Task ------------------------
     elif choice == "4":
         delete_task = choices.delete_task(tasks)
         print(delete_task)
         if "deleted" in delete_task:
             choices.save_tasks(tasks)
+
 #---------------- End/Quit Program ----------------------------
     elif choice == "5" or choice.lower() == "exit" or choice.lower() == "quit"  or choice.lower() == "q":
         end_program = choices.exit_program()
