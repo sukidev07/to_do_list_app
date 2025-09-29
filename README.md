@@ -1,36 +1,26 @@
-# to_do_list_app
+# To-Do List Application
 
-### Core concepts to learn CRUD
-----------------------------------
-- Create
-- Read
-- Update
-- Delete
+This is a command-line to-do list application written in Python. It allows users to manage their daily tasks right from the terminal. The project is a practical exercise in learning fundamental programming concepts and Python development.
 
-### task:
------------------------------------
-main.py
-Created a while true loop with selection options
-(1-5)
-1. add
-2. list
-3. update
-4. delete
-5. exit
+## Core Features Implemented
 
-Worked on making a list tasks []
-Use of the function append() to add input values to the list
-Use of the function pop() to get an index value and perform multi actions
-1. get the string value so we can store and repeat the value name confirming we deleted the list item
-2. remove the actual indexed item
-3. added a -1 to the operation since we provide number range starting at 1 to x but idexing starts at 0
-   if you select 1 you need to delete index 0 thus the extra added mathing
+The application currently supports full in-memory CRUD (Create, Read, Update, Delete) operations for managing tasks.
 
-Learned to update the list array based on request access parameter
-Take in a user input value to note the task number
-Prompted new user input of what to replace with
-Took the exsting array compared it to the user input - 1 to get the correct index location and then used the = operation to fill in that part of the array with the new value.
+* **Create**: Add a new task to the list.
+* **Read**: View all the tasks currently on the list.
+* **Update**: Modify an existing task.
+* **Delete**: Remove a task from the list.
 
+The program runs in a continuous loop, allowing the user to perform multiple actions in a single session. All application logic is neatly organized into functions within the `choices.py` module.
+
+## Next Objective: File Persistence
+
+The current list of tasks is stored in memory, which means all tasks are lost when the program closes. The next major goal is to implement **persistence**. This will involve:
+
+1.  **Saving Tasks**: Writing the current list of tasks to a text file (`tasks.txt`).
+2.  **Loading Tasks**: Reading from `tasks.txt` when the application starts up, so the user's session can be restored.
+
+This will be the first step in making the application a truly useful, long-term task manager.
 
 ### git update guide:
 -----------------------------------
@@ -45,4 +35,3 @@ Examples:
     fix: Prevent crash on non-numeric user input
     refactor: Move game logic functions into separate modules
     docs: Add comments explaining main game loop
-
