@@ -2,7 +2,7 @@
 
 # Creating a list management application for tracking tasks.
 # Key concepts to learn CRUD: Create Read Update Delete
-# importss
+# imports
 import choices
 
 # ------------- Start of program ----------------

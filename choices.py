@@ -5,22 +5,24 @@
 
 # ---------------- Save Tasks ------------------------
 
-def save_tasks(tasks, filename="tasks.txt"):
-    # open a new or existing file tasks.txt created locally in the path.
+def save_tasks(tasks, filename="tasks.csv"):
+    # open a new or existing file in write mode
     with open(filename, "w") as file:
         for task in tasks:
-            file.write(task + "\n")
+            file.write(f"{task['title']},{task['priority']},{task['due_date']}\n")
         return f"Tasks saved to {filename}."
     # print("Tasks saved to", filename)
 
 # ---------------- Load Tasks ------------------------
-def load_tasks(filename="tasks.txt"):
+def load_tasks(filename="tasks.csv"):
     tasks = []
     try:
         with open(filename, "r") as file:
             # readlines() reads all lines in a file and returns them as a list of strings.
             # using list comprehension to strip newline characters from each line.
-            tasks = [line.strip() for line in file.readlines()]
+            tasks = [line.strip().split(",") for line in file.readlines()]
+            # Convert each task back into a dictionary
+            tasks = [{"title": title, "priority": priority, "due_date": due_date} for title, priority, due_date in tasks]
         return tasks, f"Tasks loaded from: {filename}."
         # print("Tasks loaded from", filename)
     except FileNotFoundError:
@@ -30,16 +32,51 @@ def load_tasks(filename="tasks.txt"):
         return tasks, f"An error occurred while loading tasks: {e}"
         # print("An error occurred while loading tasks:", e)
 
+# ---------------- Validate Date ------------------------
+def validate_date(date_str):
+        from datetime import datetime
+        try:
+            datetime.strptime(date_str, "%Y-%m-%d")
+            return True
+        except ValueError:
+            return False
+
+# ---------------- Validate Inputs ------------------------
+def validate_inputs(input_title, input_priority, input_due_date):
+        # Get title, priority, due date from user
+        while True:
+            input_title = input("Enter the task title: ")
+            if input_title.strip() == "":
+                print("Task title cannot be empty. Please enter a valid title.")
+            else:
+                break
+
+        while True:
+            input_priority = input("Enter the task priority (Low, Medium, High): ").upper()
+            if input_priority not in ["LOW", "MEDIUM", "HIGH"]:
+                print("Invalid priority. Please enter Low, Medium, or High.")
+            else:
+                break
+
+        while True:
+            input_due_date = input("Enter the due date (YYYY-MM-DD): ")
+            if not validate_date(input_due_date):
+                print("Invalid date format. Please enter the date in YYYY-MM-DD format.")
+            else:
+                break
+
+        return input_title, input_priority, input_due_date
 # ---------------- Add Task --------------------------
 def add_task(tasks):
-        # create a new task dictionary to hold the task information
-        # Get title, priority, due date from user
-        title = input("Enter the task title: ")
-        priority = input("Enter the task priority (Low, Medium, High): ")
-        due_date = input("Enter the due date (YYYY-MM-DD): ")
-        
-        # Create a new task dictionary
-        new_task = {f"title": title, "priority": priority, "due_date": due_date}
+        # get and add validated user input from validate_inputs function to add_task function
+        title, priority, due_date = validate_inputs(input_title="", input_priority="", input_due_date="")
+        # this is failing on line 71 - cannot unpack non-iterable NoneType object
+
+
+     
+
+        # create a new task dictionary
+        new_task = {"title": title, "priority": priority, "due_date": due_date}
 
         # task added to dictionary list
         tasks.append(new_task)
@@ -59,7 +96,7 @@ def list_tasks(tasks):
 
         # can remove the else and go into loop, we validated first, now do a task.
         for index, task in enumerate(tasks, start=1):
-             task_list_string += f"{index}. {task}\n"
+            task_list_string += f"{index}. Title: {task['title']}, Priority: {task['priority']}, Due Date: {task['due_date']}\n"
         return task_list_string
 
 
@@ -80,13 +117,12 @@ def update_task(tasks):
             # error_handling check to validate
             # validates against the len() function to check tasks list total amount
             if 1 <= task_to_update <= len(tasks):
-                # validate
-                # gets the new updated value to be used to replace the specified index
-                update_task = input("Enter the updated task: ")
+                # get user input from validate_inputs
+                update_title, update_priority, update_due_date = validate_inputs(input_title="", input_priority="", input_due_date="")
                 # gets the tasks list, validates  against input of task_to_update - 1 to get the correct index number
                 # then adds thew new information from update_task to tasks at the proper index
-                tasks[task_to_update - 1] = update_task
-                return f"Task '{task_to_update}' has been updated: '{update_task}'"
+                tasks[task_to_update - 1] = {"title": update_title, "priority": update_priority, "due_date": update_due_date}
+                return f"Task '{task_to_update}' has been updated: '{tasks[task_to_update - 1]}'"
                 #print(f"Task {task_to_update} has been updated to: {update_task}")
                 #print("Task updated successfully!")
             else:
@@ -121,7 +157,7 @@ def delete_task(tasks):
                 # 1. to get the object string value to print {deleted_task} 
                 # 2. actually remove pop() specified index from the list in tasks
                 deleted_task = tasks.pop(task_to_delete - 1)
-                return f"Task '{task_to_delete}' has been deleted: {deleted_task}"
+                return f"Task '{task_to_delete}' has been deleted: '{deleted_task}'"
                 #print(f"Task {task_to_delete} has been deleted.")
                 #print("Task deleted successfully!")
             else:
