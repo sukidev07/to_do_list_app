@@ -32,11 +32,18 @@ def load_tasks(filename="tasks.txt"):
 
 # ---------------- Add Task --------------------------
 def add_task(tasks):
-        # Add a task | get a user input store in new_task
-        new_task = input("Please add a new task: ")
-        # tasks is are list we are appending the tasks with (new_task) that we just got from the user input
+        # create a new task dictionary to hold the task information
+        # Get title, priority, due date from user
+        title = input("Enter the task title: ")
+        priority = input("Enter the task priority (Low, Medium, High): ")
+        due_date = input("Enter the due date (YYYY-MM-DD): ")
+        
+        # Create a new task dictionary
+        new_task = {f"title": title, "priority": priority, "due_date": due_date}
+
+        # task added to dictionary list
         tasks.append(new_task)
-        # print configraiton of what we just added
+        # print confirmation of what we just added
         return new_task
         # print("New task added:", new_task)
 
