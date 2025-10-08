@@ -1,28 +1,38 @@
 # choices.py
 
+# module for to_do_list_app
+import csv
+
 # refaactor main.py splitting out code into functions.
 # choices add, remove, list, append, quit
 
 # ---------------- Save Tasks ------------------------
 
 def save_tasks(tasks, filename="tasks.csv"):
-    # open a new or existing file in write mode
-    with open(filename, "w") as file:
-        for task in tasks:
-            file.write(f"{task['title']},{task['priority']},{task['due_date']}\n")
-        return f"Tasks saved to {filename}."
-    # print("Tasks saved to", filename)
+    # save the list of tasks to a CSV file
+    with open(filename, "w", newline="") as file:
+        # define the column names for the CSV file
+        fieldnames = ["title", "priority", "due_date"]
+       
+        # create a DictWriter object to write dictionaries to the CSV file
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+       
+        # write the header row to the CSV file
+        writer.writeheader()
+
+        # write each task as a row in the CSV file
+        writer.writerows(tasks)
+
+    return f"Tasks saved to: {filename}."
 
 # ---------------- Load Tasks ------------------------
 def load_tasks(filename="tasks.csv"):
     tasks = []
     try:
         with open(filename, "r") as file:
-            # readlines() reads all lines in a file and returns them as a list of strings.
-            # using list comprehension to strip newline characters from each line.
-            tasks = [line.strip().split(",") for line in file.readlines()]
-            # Convert each task back into a dictionary
-            tasks = [{"title": title, "priority": priority, "due_date": due_date} for title, priority, due_date in tasks]
+            # read the CSV file as a list of dictionaries
+            reader = csv.DictReader(file)
+            tasks = list(reader)
         return tasks, f"Tasks loaded from: {filename}."
         # print("Tasks loaded from", filename)
     except FileNotFoundError:
@@ -70,10 +80,6 @@ def validate_inputs(input_title, input_priority, input_due_date):
 def add_task(tasks):
         # get and add validated user input from validate_inputs function to add_task function
         title, priority, due_date = validate_inputs(input_title="", input_priority="", input_due_date="")
-        # this is failing on line 71 - cannot unpack non-iterable NoneType object
-
-
-     
 
         # create a new task dictionary
         new_task = {"title": title, "priority": priority, "due_date": due_date}
