@@ -52,41 +52,52 @@ def validate_date(date_str):
             return False
 
 # ---------------- Validate Inputs ------------------------
-def validate_inputs(input_title, input_priority, input_due_date):
+def validate_inputs(input_title, input_priority, input_due_date, input_status=False):
         # Get title, priority, due date from user
         while True:
-            input_title = input("Enter the task title: ")
+            input_title = input(f"Enter the task title (Current: {input_title}): ")
             if input_title.strip() == "":
                 print("Task title cannot be empty. Please enter a valid title.")
             else:
                 break
 
         while True:
-            input_priority = input("Enter the task priority (Low, Medium, High): ").upper()
+            input_priority = input(f"Enter the task priority (Low, Medium, High) (Current: {input_priority}): ").upper()
             if input_priority not in ["LOW", "MEDIUM", "HIGH"]:
                 print("Invalid priority. Please enter Low, Medium, or High.")
             else:
                 break
 
         while True:
-            input_due_date = input("Enter the due date (YYYY-MM-DD): ")
+            input_due_date = input(f"Enter the due date (YYYY-MM-DD) (Current: {input_due_date}): ")
             if not validate_date(input_due_date):
                 print("Invalid date format. Please enter the date in YYYY-MM-DD format.")
             else:
                 break
+        
+        while True:
+            status_input = input(f"Is the task completed? (yes/no) (Current: {input_status}): ").lower()
+            if status_input in ["yes", "y"]:
+                input_status = True
+                break
+            elif status_input in ["no", "n"]:
+                input_status = False
+                break
+            else:
+                print("Invalid input. Please enter 'yes' or 'no'.")
 
-        return input_title, input_priority, input_due_date
+        return input_title, input_priority, input_due_date, input_status
 # ---------------- Add Task --------------------------
 def add_task(tasks):
         # get and add validated user input from validate_inputs function to add_task function
-        title, priority, due_date = validate_inputs(input_title="", input_priority="", input_due_date="")
+        title, priority, due_date, status = validate_inputs(input_title="", input_priority="", input_due_date="", input_status=False)
 
         # create a new task dictionary
         new_task = {
             "title": title,
             "priority": priority,
             "due_date": due_date,
-            "status": "Pending"
+            "status": False
         }
 
         # task added to dictionary list
@@ -107,7 +118,7 @@ def list_tasks(tasks):
 
         # can remove the else and go into loop, we validated first, now do a task.
         for index, task in enumerate(tasks, start=1):
-            status_marker = "[X]" if task.get("status") == "Completed" else "[ ]"
+            status_marker = "[X]" if task.get("status") == True else "[ ]"
             # f string to format the output of the task list
             task_list_string += f"{index}. {status_marker} Title: {task['title']}, Priority: {task['priority']}, Due Date: {task['due_date']}\n"
         return task_list_string
@@ -130,13 +141,26 @@ def update_task(tasks):
             # error_handling check to validate
             # validates against the len() function to check tasks list total amount
             if 1 <= task_to_update <= len(tasks):
-                # get user input from validate_inputs
-                update_title, update_priority, update_due_date = validate_inputs(input_title="", input_priority="", input_due_date="")
-                # gets the tasks list, validates  against input of task_to_update - 1 to get the correct index number
-                # then adds thew new information from update_task to tasks at the proper index
-                tasks[task_to_update - 1] = {"title": update_title, "priority": update_priority, "due_date": update_due_date}
-                return f"Task '{task_to_update}' has been updated: '{tasks[task_to_update - 1]}'"
-                #print(f"Task {task_to_update} has been updated to: {update_task}")
+                # validate -1 task since you know, we start at 0, but people think 1-100 not 0-99 
+                selected_task = tasks[task_to_update - 1]
+                print(f"Selected Task {task_to_update} (Current: {selected_task})")
+
+                # get and add validated user input from validate_inputs function to add_task function
+                title, priority, due_date, status = validate_inputs(
+                    input_title=selected_task['title'],
+                    input_priority=selected_task['priority'],
+                    input_due_date=selected_task['due_date'],
+                    input_status=selected_task['status']
+                )
+
+                # update the selected task with new values
+                selected_task['title'] = title
+                selected_task['priority'] = priority
+                selected_task['due_date'] = due_date
+                selected_task['status'] = status
+
+                return f"Task '{task_to_update}' has been updated to: {selected_task}"
+                #print(f"Task {task_to_update} has been updated.")
                 #print("Task updated successfully!")
             else:
                 return "Invalid task number. No task updated."
@@ -144,7 +168,7 @@ def update_task(tasks):
             return "Invalid input. Please enter a valid task number."
 
 # ----------------- Mark Task as Completed ------------------------
-def mark_task_completed(tasks):
+def task_status(tasks):
         if not tasks:
             return "No tasks found."
         
@@ -153,23 +177,34 @@ def mark_task_completed(tasks):
         return_task_list = list_tasks(tasks)
         print(return_task_list)
 
+        # ask user which task to mark as completed or not completed
+        # should return a TRUE or FALSE value based on user input
         try:
-            # Ask user which task they would like to mark as completed
             task_to_mark = int(input("Enter the number of the task to mark as completed: "))
 
             # error_handling check to validate
             # use of the len() function to review the list and range the range starting at index 0
             if 1 <= task_to_mark <= len(tasks):
                 # validate -1 task since you know, we start at 0, but people think 1-100 not 0-99 
-                tasks[task_to_mark - 1]['status'] = 'Completed'
-                return f"Task '{task_to_mark}' has been marked as completed."
-                #print(f"Task {task_to_mark} has been marked as completed.")
-                #print("Task marked as completed successfully!")
+                selected_task = tasks[task_to_mark - 1]
+
+                while True:
+                    status_input = input("Is the task completed? (yes/no): ").lower()
+                    if status_input in ["yes", "y"]:
+                        selected_task['status'] = True
+                        return f"Task '{task_to_mark}' has been marked as completed."
+                        break
+                    elif status_input in ["no", "n"]:
+                        selected_task['status'] = False
+                        return f"Task '{task_to_mark}' has been marked as not completed."
+                        break
+                    else:
+                        print("Invalid input. Please enter 'yes' or 'no'.")
             else:
-                return "Invalid task number. No task marked as completed."
+                return "Invalid task number. No task updated."
         except ValueError:
             return "Invalid input. Please enter a valid task number."
-    
+
 # ---------------- Delete Task ------------------------
 # delete operation to list the current tasks in an ordered number list
 # validate an empty list before continueing

@@ -45,12 +45,13 @@ while True:
         if "updated" in update_task:
             choices.save_tasks(tasks)
 
-#---------------- Mark Task as Completed ------------------------
+#---------------- Mark Task Status ------------------------
     elif choice == "4":
-        mark_completed = choices.mark_task_completed(tasks)
-        print(mark_completed)
-        if "marked as completed" in mark_completed:
+        mark_status = choices.task_status(tasks)
+        print(mark_status)
+        if "marked as completed" in mark_status:
             choices.save_tasks(tasks)
+
 #---------------- Delete Task ------------------------
     elif choice == "5":
         delete_task = choices.delete_task(tasks)
