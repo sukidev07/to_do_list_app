@@ -12,7 +12,7 @@ def save_tasks(tasks, filename="tasks.csv"):
     # save the list of tasks to a CSV file
     with open(filename, "w", newline="") as file:
         # define the column names for the CSV file
-        fieldnames = ["title", "priority", "due_date"]
+        fieldnames = ["title", "priority", "due_date", "status"]
        
         # create a DictWriter object to write dictionaries to the CSV file
         writer = csv.DictWriter(file, fieldnames=fieldnames)
@@ -82,7 +82,12 @@ def add_task(tasks):
         title, priority, due_date = validate_inputs(input_title="", input_priority="", input_due_date="")
 
         # create a new task dictionary
-        new_task = {"title": title, "priority": priority, "due_date": due_date}
+        new_task = {
+            "title": title,
+            "priority": priority,
+            "due_date": due_date,
+            "status": "Pending"
+        }
 
         # task added to dictionary list
         tasks.append(new_task)
@@ -102,7 +107,9 @@ def list_tasks(tasks):
 
         # can remove the else and go into loop, we validated first, now do a task.
         for index, task in enumerate(tasks, start=1):
-            task_list_string += f"{index}. Title: {task['title']}, Priority: {task['priority']}, Due Date: {task['due_date']}\n"
+            status_marker = "[X]" if task.get("status") == "Completed" else "[ ]"
+            # f string to format the output of the task list
+            task_list_string += f"{index}. {status_marker} Title: {task['title']}, Priority: {task['priority']}, Due Date: {task['due_date']}\n"
         return task_list_string
 
 
@@ -136,6 +143,32 @@ def update_task(tasks):
         except ValueError:
             return "Invalid input. Please enter a valid task number."
 
+# ----------------- Mark Task as Completed ------------------------
+def mark_task_completed(tasks):
+        if not tasks:
+            return "No tasks found."
+        
+        # called the list_task(tasks) function because it repeats 
+        # gets and returns the list more DRY
+        return_task_list = list_tasks(tasks)
+        print(return_task_list)
+
+        try:
+            # Ask user which task they would like to mark as completed
+            task_to_mark = int(input("Enter the number of the task to mark as completed: "))
+
+            # error_handling check to validate
+            # use of the len() function to review the list and range the range starting at index 0
+            if 1 <= task_to_mark <= len(tasks):
+                # validate -1 task since you know, we start at 0, but people think 1-100 not 0-99 
+                tasks[task_to_mark - 1]['status'] = 'Completed'
+                return f"Task '{task_to_mark}' has been marked as completed."
+                #print(f"Task {task_to_mark} has been marked as completed.")
+                #print("Task marked as completed successfully!")
+            else:
+                return "Invalid task number. No task marked as completed."
+        except ValueError:
+            return "Invalid input. Please enter a valid task number."
     
 # ---------------- Delete Task ------------------------
 # delete operation to list the current tasks in an ordered number list

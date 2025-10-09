@@ -20,10 +20,11 @@ while True:
     print("1. Add a new task")
     print("2. View all tasks")
     print("3. Update task")
-    print("4. Delete task")
-    print("5. Exit")
+    print("4. Mark task as completed")
+    print("5. Delete task")
+    print("6. Exit")
     print("-----------------")
-    choice = input("Enter your choice (1-5): ")
+    choice = input("Enter your choice (1-6): ")
 
 #---------------- Add Task --------------------------
     if choice == "1":
@@ -36,6 +37,7 @@ while True:
         all_the_tasks = choices.list_tasks(tasks)
         print(all_the_tasks)
 
+#
 #---------------- Update Task ------------------------
     elif choice == "3":
         update_task = choices.update_task(tasks)
@@ -43,15 +45,21 @@ while True:
         if "updated" in update_task:
             choices.save_tasks(tasks)
 
-#---------------- Delete Task ------------------------
+#---------------- Mark Task as Completed ------------------------
     elif choice == "4":
+        mark_completed = choices.mark_task_completed(tasks)
+        print(mark_completed)
+        if "marked as completed" in mark_completed:
+            choices.save_tasks(tasks)
+#---------------- Delete Task ------------------------
+    elif choice == "5":
         delete_task = choices.delete_task(tasks)
         print(delete_task)
         if "deleted" in delete_task:
             choices.save_tasks(tasks)
 
 #---------------- End/Quit Program ----------------------------
-    elif choice == "5" or choice.lower() == "exit" or choice.lower() == "quit"  or choice.lower() == "q":
+    elif choice == "6" or choice.lower() == "exit" or choice.lower() == "quit"  or choice.lower() == "q":
         end_program = choices.exit_program()
         print(end_program)
         break
