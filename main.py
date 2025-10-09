@@ -20,7 +20,7 @@ while True:
     print("1. Add a new task")
     print("2. View all tasks")
     print("3. Update task")
-    print("4. Mark task as completed")
+    print("4. Task Status")
     print("5. Delete task")
     print("6. Exit")
     print("-----------------")
@@ -45,11 +45,11 @@ while True:
         if "updated" in update_task:
             choices.save_tasks(tasks)
 
-#---------------- Mark Task Status ------------------------
+#---------------- Task Status ------------------------
     elif choice == "4":
         mark_status = choices.task_status(tasks)
         print(mark_status)
-        if "marked as completed" in mark_status:
+        if "status update:" in mark_status:
             choices.save_tasks(tasks)
 
 #---------------- Delete Task ------------------------
